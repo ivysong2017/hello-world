@@ -2,7 +2,7 @@ pipeline{
 	agent any
 	stages{
 		steps{
-			sh `echo "Failed!"; exit 1`
+			sh 'echo "Failed!"; exit 1'
 			}
 		}
 	post{
