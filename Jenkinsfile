@@ -9,7 +9,9 @@ pipeline {
       steps {
         sh 'echo "Build...."'
         script{
-          echo "db password: ${env.DBPASSWORD}"
+          #echo "db password: ${env.DBPASSWORD}"
+          sh 'cd /home/jenkins/onboardingui'
+          sh './downloadsrccode.sh'
         }
       }
     }
@@ -20,6 +22,9 @@ pipeline {
           withCredentials([string(credentialsId:"DB_PASSWORD", variable:"DBPASSWD")]){
             echo "db passwd: ${DBPASSWD}"
           }
+          
+          sh 'cd /home/jenkins/onboardingui'
+          sh 'docker build -f SeleniumTestDockerfile .'
         }
       }
     }
@@ -29,5 +34,12 @@ pipeline {
         sh 'echo "Deploy...."'
       }
     }
+    
+    post{
+      always{
+        junit '/home/jenkins/onboardingui/onboarding/*.xml'
+      }
+    }
+    
   }
 }
